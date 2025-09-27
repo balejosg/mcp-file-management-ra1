@@ -1,0 +1,10 @@
+Este es un archivo de ejemplo para practicar búsqueda de texto.
+Contiene varias líneas con diferentes palabras clave.
+
+La palabra "java" aparece en esta línea.
+También tenemos texto sobre programación aquí.
+JAVA en mayúsculas también está presente.
+
+Otra línea con java en minúsculas.
+Esta línea no contiene la palabra buscada.
+Final del archivo con más java contenido.

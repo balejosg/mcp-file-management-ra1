@@ -1,0 +1,6 @@
+id,name,email,department,role,active,createdAt,updatedAt
+1,Juan Pérez,juan.perez@empresa.com,IT,Developer,true,2024-01-15T09:30:00,2024-01-15T09:30:00
+2,María García,maria.garcia@empresa.com,HR,Manager,true,2024-01-16T10:15:00,2024-01-20T14:20:00
+3,Carlos López,carlos.lopez@empresa.com,Finance,Analyst,true,2024-01-17T11:45:00,2024-01-17T11:45:00
+4,Ana Martínez,ana.martinez@empresa.com,Marketing,Specialist,false,2024-01-18T08:20:00,2024-01-25T16:30:00
+5,Pedro Sánchez,pedro.sanchez@empresa.com,IT,Senior Developer,true,2024-01-19T13:10:00,2024-01-19T13:10:00

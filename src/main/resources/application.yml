@@ -1,0 +1,114 @@
+spring:
+  application:
+    name: mcp-server-ra1-ficheros
+  
+  # Configuración MCP Server
+  ai:
+    mcp:
+      server:
+        enabled: true
+        port: 3000
+        host: localhost
+        # Configuración de herramientas MCP
+        tools:
+          # Herramientas de archivos CSV
+          read_users_csv:
+            description: "Lee usuarios desde archivo CSV usando Java I/O vanilla"
+            enabled: true
+          write_users_csv:
+            description: "Escribe usuarios a archivo CSV usando Java I/O vanilla"
+            enabled: true
+          
+          # Herramientas de archivos JSON  
+          read_users_json:
+            description: "Lee usuarios desde archivo JSON usando Jackson"
+            enabled: true
+          write_users_json:
+            description: "Escribe usuarios a archivo JSON usando Jackson"
+            enabled: true
+          
+          # Herramientas de archivos XML
+          read_users_xml_dom:
+            description: "Lee usuarios desde archivo XML usando DOM parser"
+            enabled: true
+          write_users_xml:
+            description: "Escribe usuarios a archivo XML usando DOM y Transformer"
+            enabled: true
+          read_users_xml_sax:
+            description: "Lee usuarios desde archivo XML usando SAX parser"
+            enabled: true
+          
+          # Herramientas de gestión de directorios
+          list_user_files:
+            description: "Lista archivos de usuario en directorio (CSV, JSON, XML)"
+            enabled: true
+          validate_directory_structure:
+            description: "Valida y crea estructura de directorios para datos de usuario"
+            enabled: true
+
+          # ========== NUEVAS HERRAMIENTAS BASADAS EN CONCEPTOS TEÓRICOS DEL PDF ==========
+          
+          # Herramientas de información de archivos (Actividad 1 PDF)
+          get_file_info:
+            description: "Obtiene información detallada de archivo (tamaño, permisos, fecha)"
+            enabled: true
+          
+          # Herramientas de búsqueda de texto (Actividad 4 PDF)
+          search_text_in_file:
+            description: "Busca texto en archivo y muestra líneas donde aparece"
+            enabled: true
+          
+          # Herramientas de comparación de rendimiento
+          compare_io_performance:
+            description: "Compara rendimiento BufferedReader vs FileReader"
+            enabled: true
+          
+          # Herramientas de acceso aleatorio
+          random_access_read:
+            description: "Lee desde posición específica usando RandomAccessFile"
+            enabled: true
+          random_access_write:
+            description: "Escribe en posición específica usando RandomAccessFile"
+            enabled: true
+          
+          # Herramientas de codificación de caracteres
+          convert_file_encoding:
+            description: "Convierte archivo entre codificaciones (ISO-8859-1, UTF-8)"
+            enabled: true
+          
+          # Herramientas de archivos temporales
+          create_temp_file:
+            description: "Crea archivo temporal y devuelve su ubicación"
+            enabled: true
+          
+          # Herramientas de comparación NIO vs IO
+          compare_nio_vs_io:
+            description: "Compara java.nio.file.Files vs java.io tradicional"
+            enabled: true
+          
+          # Herramientas de procesamiento de texto avanzado
+          format_text_file:
+            description: "Formatea texto eliminando espacios extra y aplicando mayúsculas"
+            enabled: true
+
+# Configuración de logging
+logging:
+  level:
+    com.dam.accesodatos: DEBUG
+    org.springframework.ai.mcp: DEBUG
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Configuración de directorios de trabajo
+app:
+  file-service:
+    base-path: "./data"
+    temp-path: "./data/temp"
+    export-path: "./data/exports"
+    create-directories-on-startup: true
+    supported-formats:
+      - csv
+      - json
+      - xml

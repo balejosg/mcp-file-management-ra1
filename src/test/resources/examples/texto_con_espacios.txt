@@ -1,0 +1,6 @@
+    este   texto    tiene     muchos  espacios
+   al    principio     y    entre      palabras
+necesita   ser    formateado    correctamente
+
+   otra   línea    con    espacios   irregulares
+ejemplo  para   el   procesamiento   de   texto

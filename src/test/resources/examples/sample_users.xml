@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+    <user>
+        <id>1</id>
+        <name>Juan Pérez</name>
+        <email>juan.perez@empresa.com</email>
+        <department>IT</department>
+        <role>Developer</role>
+        <active>true</active>
+        <createdAt>2024-01-15T09:30:00</createdAt>
+        <updatedAt>2024-01-15T09:30:00</updatedAt>
+    </user>
+    <user>
+        <id>2</id>
+        <name>María García</name>
+        <email>maria.garcia@empresa.com</email>
+        <department>HR</department>
+        <role>Manager</role>
+        <active>true</active>
+        <createdAt>2024-01-16T10:15:00</createdAt>
+        <updatedAt>2024-01-20T14:20:00</updatedAt>
+    </user>
+    <user>
+        <id>3</id>
+        <name>Carlos López</name>
+        <email>carlos.lopez@empresa.com</email>
+        <department>Finance</department>
+        <role>Analyst</role>
+        <active>true</active>
+        <createdAt>2024-01-17T11:45:00</createdAt>
+        <updatedAt>2024-01-17T11:45:00</updatedAt>
+    </user>
+    <user>
+        <id>4</id>
+        <name>Ana Martínez</name>
+        <email>ana.martinez@empresa.com</email>
+        <department>Marketing</department>
+        <role>Specialist</role>
+        <active>false</active>
+        <createdAt>2024-01-18T08:20:00</createdAt>
+        <updatedAt>2024-01-25T16:30:00</updatedAt>
+    </user>
+    <user>
+        <id>5</id>
+        <name>Pedro Sánchez</name>
+        <email>pedro.sanchez@empresa.com</email>
+        <department>IT</department>
+        <role>Senior Developer</role>
+        <active>true</active>
+        <createdAt>2024-01-19T13:10:00</createdAt>
+        <updatedAt>2024-01-19T13:10:00</updatedAt>
+    </user>
+</users>

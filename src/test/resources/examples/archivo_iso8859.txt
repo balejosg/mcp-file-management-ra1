@@ -1,0 +1,8 @@
+Archivo con caracteres especiales para pruebas de codificación:
+- Acentos: áéíóú, ÁÉÍÓÚ
+- Eñe: niño, año, España
+- Diéresis: pingüino, cigüeña
+- Símbolos: ¿¡ñÑçÇ
+- Otros: °ªº²³
+
+Este archivo está en codificación ISO-8859-1 para probar conversión a UTF-8.
