@@ -52,7 +52,7 @@ src/
 
 ### 2. Clonar y Ejecutar
 ```bash
-git clone [URL_DEL_REPOSITORIO]
+git clone https://github.com/balejosg/mcp-file-management-ra1
 cd mcp-server-ra1-ficheros
 mvn clean compile
 ```
