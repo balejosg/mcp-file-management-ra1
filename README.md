@@ -198,6 +198,7 @@ Para aprobar este RA1, debes:
 - [ ] **Crear directorios padre automáticamente cuando sea necesario**
 - [ ] **Documentar decisiones técnicas en comentarios**
 - [ ] **Código limpio y bien estructurado**
+- [ ] **Explica el código a tu profesor en horario de clase**
 
 ## 🔧 Uso del Servidor MCP
 
@@ -240,7 +241,7 @@ mvn test -Dtest=FileUserServiceTest#testWriteUsersToCSV_CreatesValidFile
 
 ## 📞 Soporte
 
-- **Profesor:** [Tu email]
+- **Profesor:** bruno.ag@educa.madrid.org
 - **Documentación adicional:** Ver `package-info.java` en el paquete `ra1`
 - **Issues:** Crear issue en el repositorio del curso
 
