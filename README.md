@@ -67,19 +67,49 @@ mvn test
 
 Abre el archivo `src/main/java/com/dam/accesodatos/ra1/FileUserServiceImpl.java` y completa todos los métodos marcados con `TODO`.
 
-### Métodos a Implementar
+### Métodos a Implementar (18 total)
 
-| Método | Criterio | Tecnología | Descripción |
-|--------|----------|------------|-------------|
-| `readUsersFromCSV()` | CE1.f | BufferedReader, FileReader | Lee usuarios desde CSV |
-| `writeUsersToCSV()` | CE1.f | PrintWriter, FileWriter | Escribe usuarios a CSV |
-| `readUsersFromJSON()` | CE1.e | Jackson ObjectMapper | Lee usuarios desde JSON |
-| `writeUsersToJSON()` | CE1.e | Jackson ObjectMapper | Escribe usuarios a JSON |
-| `readUsersFromXML()` | CE1.d | DOM Parser | Lee usuarios desde XML |
-| `writeUsersToXML()` | CE1.d | DOM + Transformer | Escribe usuarios a XML |
-| `readUsersFromXMLSAX()` | CE1.d | SAX Parser | Lee usuarios con SAX |
-| `listUserFiles()` | CE1.c | Files.list() | Lista archivos de usuario |
-| `validateDirectoryStructure()` | CE1.c | Files API | Valida/crea directorios |
+#### CE1.a: Análisis de clases relacionadas con tratamiento de ficheros
+| Método | Tecnología | Descripción |
+|--------|------------|-------------|
+| `getFileInfo()` | File.length(), canRead(), SimpleDateFormat | Información detallada de archivos (actividad 1 de la presentación vista en clase) |
+| `compareIOPerformance()` | System.currentTimeMillis(), FileReader vs BufferedReader | Comparación de rendimiento I/O con y sin buffering |
+| `compareNIOvsIO()` | Files.readAllLines() vs BufferedReader | Análisis comparativo java.nio vs java.io tradicional |
+
+#### CE1.b: Utilización de flujos para acceso a información en ficheros
+| Método | Tecnología | Descripción |
+|--------|------------|-------------|
+| `searchTextInFile()` | BufferedReader + String.contains() | Búsqueda de texto en archivos (actividad 4 de la presentación vista en clase) |
+| `randomAccessRead()` | RandomAccessFile + seek() | Lectura desde posición específica |
+| `randomAccessWrite()` | RandomAccessFile + seek() | Escritura en posición específica |
+| `convertFileEncoding()` | InputStreamReader/OutputStreamWriter | Conversión entre codificaciones (UTF-8, ISO-8859-1) |
+
+#### CE1.c: Utilización de clases para gestión de ficheros y directorios
+| Método | Tecnología | Descripción |
+|--------|------------|-------------|
+| `listUserFiles()` | Files.list() | Lista archivos de usuario en directorio |
+| `validateDirectoryStructure()` | Files API | Valida y crea estructura de directorios |
+| `createTempFile()` | File.createTempFile() | Creación y gestión de archivos temporales |
+| `formatTextFile()` | Character processing | Procesamiento de texto avanzado (basado en ejemplo ArreglarFichero de la presentación vista en clase) |
+
+#### CE1.d: Escritura y lectura de información en formato XML
+| Método | Tecnología | Descripción |
+|--------|------------|-------------|
+| `readUsersFromXML()` | DOM Parser | Lee usuarios desde XML usando DOM |
+| `writeUsersToXML()` | DOM + Transformer | Escribe usuarios a XML usando DOM |
+| `readUsersFromXMLSAX()` | SAX Parser | Lee usuarios desde XML usando SAX (alternativa eficiente) |
+
+#### CE1.e: Escritura y lectura de información en formato JSON
+| Método | Tecnología | Descripción |
+|--------|------------|-------------|
+| `readUsersFromJSON()` | Jackson ObjectMapper | Lee usuarios desde JSON |
+| `writeUsersToJSON()` | Jackson ObjectMapper | Escribe usuarios a JSON con formato pretty-print |
+
+#### CE1.f: Escritura y lectura de información en otros formatos estándar
+| Método | Tecnología | Descripción |
+|--------|------------|-------------|
+| `readUsersFromCSV()` | BufferedReader, FileReader | Lee usuarios desde CSV con parsing manual |
+| `writeUsersToCSV()` | PrintWriter, FileWriter | Escribe usuarios a CSV con formateo manual |
 
 ## 🧪 Metodología TDD (Test-Driven Development)
 
@@ -170,23 +200,42 @@ public boolean writeUsersToXML(List<User> users, String filePath) {
 
 ## 📚 Clases Java I/O Requeridas
 
-### Gestión de Archivos (CE1.c)
-- `java.nio.file.Files` - Operaciones modernas
-- `java.nio.file.Paths` - Construcción de rutas  
-- `java.io.File` - Operaciones clásicas
+### Análisis de Clases (CE1.a)
+- `java.io.File` - Operaciones clásicas, información de archivos
+- `java.text.SimpleDateFormat` - Formateo de fechas
+- `java.util.Date` - Representación de fechas y timestamps
+- `java.lang.System` - Medición de tiempo (currentTimeMillis)
 
 ### Flujos de Datos (CE1.b)
 - `java.io.FileInputStream/FileOutputStream` - Flujos de bytes
-- `java.io.FileReader/FileWriter` - Flujos de caracteres
-- `java.io.BufferedReader/BufferedWriter` - Lectura/escritura eficiente
+- `java.io.FileReader/FileWriter` - Flujos de caracteres básicos
+- `java.io.BufferedReader/BufferedWriter` - Lectura/escritura con buffering
+- `java.io.InputStreamReader/OutputStreamWriter` - Conversión con codificación
+- `java.io.RandomAccessFile` - Acceso aleatorio a archivos
+- `java.lang.String` - Métodos contains(), indexOf() para búsqueda
+
+### Gestión de Archivos y Directorios (CE1.c)
+- `java.nio.file.Files` - Operaciones modernas (readAllLines, list, exists)
+- `java.nio.file.Paths` - Construcción de rutas
+- `java.io.File` - Operaciones clásicas (createTempFile, listFiles)
+- `java.lang.Character` - Análisis de caracteres (isWhitespace, isAlphabetic, toUpperCase)
 
 ### Procesamiento XML (CE1.d)
 - `javax.xml.parsers.DocumentBuilder` - DOM parsing
-- `javax.xml.parsers.SAXParser` - SAX parsing
-- `javax.xml.transform.Transformer` - Escritura XML
+- `javax.xml.parsers.DocumentBuilderFactory` - Creación de parsers DOM
+- `javax.xml.parsers.SAXParser` - SAX parsing por eventos
+- `javax.xml.parsers.SAXParserFactory` - Creación de parsers SAX
+- `javax.xml.transform.Transformer` - Escritura XML con formato
+- `org.xml.sax.helpers.DefaultHandler` - Handler personalizado para SAX
 
 ### Procesamiento JSON (CE1.e)
-- `com.fasterxml.jackson.databind.ObjectMapper` - Serialización JSON
+- `com.fasterxml.jackson.databind.ObjectMapper` - Serialización/deserialización JSON
+- `com.fasterxml.jackson.core.type.TypeReference` - Tipos genéricos para deserialización
+
+### Formatos Estándar (CE1.f)
+- `java.io.PrintWriter` - Escritura formateada de texto
+- `java.io.BufferedReader` - Lectura eficiente línea por línea
+- `java.lang.String` - Métodos split(), trim() para parsing CSV
 
 ## ✅ Criterios de Evaluación
 
@@ -201,22 +250,43 @@ Para aprobar este RA1, debes:
 
 ## 🔧 Uso del Servidor MCP
 
-Una vez implementado, puedes probar las herramientas MCP:
+Una vez implementado, puedes probar las **18 herramientas MCP** disponibles:
 
 ```bash
 # Ejecutar servidor MCP
 mvn spring-boot:run
 
-# Las herramientas estarán disponibles:
-# - read_users_csv
-# - write_users_csv  
-# - read_users_json
-# - write_users_json
+# Herramientas disponibles organizadas por criterios de evaluación:
+
+# CE1.a: Análisis de clases
+# - get_file_info
+# - compare_io_performance  
+# - compare_nio_vs_io
+
+# CE1.b: Flujos de datos
+# - search_text_in_file
+# - random_access_read
+# - random_access_write
+# - convert_file_encoding
+
+# CE1.c: Gestión de archivos/directorios
+# - list_user_files
+# - validate_directory_structure
+# - create_temp_file
+# - format_text_file
+
+# CE1.d: Procesamiento XML
 # - read_users_xml_dom
 # - write_users_xml
 # - read_users_xml_sax
-# - list_user_files
-# - validate_directory_structure
+
+# CE1.e: Procesamiento JSON
+# - read_users_json
+# - write_users_json
+
+# CE1.f: Formatos estándar
+# - read_users_csv
+# - write_users_csv
 ```
 
 ## 🆘 Ayuda y Recursos
@@ -227,7 +297,19 @@ mvn spring-boot:run
 - [Java XML Processing](https://docs.oracle.com/javase/tutorial/jaxp/)
 
 ### Archivos de Ejemplo
-Revisa los archivos en `src/test/resources/examples/` para entender los formatos esperados.
+Revisa los archivos en `src/test/resources/examples/` para practicar todos los conceptos:
+
+**Archivos para formatos básicos (RA1):**
+- `sample_users.csv` - Datos de usuarios en formato CSV
+- `sample_users.json` - Datos de usuarios en formato JSON  
+- `sample_users.xml` - Datos de usuarios en formato XML
+
+**Archivos para conceptos de la presentación vista en clase:**
+- `texto_para_buscar.txt` - Para practicar búsqueda de texto (actividad 4)
+- `texto_con_espacios.txt` - Para procesamiento de texto con espacios irregulares
+- `archivo_iso8859.txt` - Para conversión de codificaciones 
+- `archivo_grande_performance.txt` - Para pruebas de rendimiento I/O
+- `README_ejemplos.md` - Guía detallada de uso de todos los archivos
 
 ### Debugging
 ```bash

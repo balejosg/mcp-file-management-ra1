@@ -1,13 +1,13 @@
 # Archivos de Ejemplo para Prácticas Avanzadas
 
-Este directorio contiene archivos de ejemplo para practicar los conceptos teóricos del PDF "UT2. Ficheros.pdf":
+Este directorio contiene archivos de ejemplo para practicar los conceptos teóricos de la presentación vista en clase:
 
-## Archivos para Búsqueda de Texto (Actividad 4 PDF)
+## Archivos para Búsqueda de Texto (Actividad 4 de la presentación vista en clase)
 - `texto_para_buscar.txt` - Archivo con múltiples ocurrencias de palabras para practicar búsqueda
   - Usar con herramienta MCP: `search_text_in_file`
   - Buscar palabras como "java", "programación", etc.
 
-## Archivos para Procesamiento de Texto (Ejemplo ArreglarFichero PDF)
+## Archivos para Procesamiento de Texto (Ejemplo ArreglarFichero de la presentación vista en clase)
 - `texto_con_espacios.txt` - Archivo con espacios irregulares para formatear
   - Usar con herramienta MCP: `format_text_file`
   - Practica eliminación de espacios y capitalización
@@ -29,13 +29,13 @@ Este directorio contiene archivos de ejemplo para practicar los conceptos teóri
 
 ## Comandos de Ejemplo
 
-### Información de Archivos (Actividad 1 PDF)
+### Información de Archivos (Actividad 1 de la presentación vista en clase)
 ```bash
 # Usar herramienta MCP: get_file_info
 # Ejemplo: get_file_info("./src/test/resources/examples/texto_para_buscar.txt")
 ```
 
-### Búsqueda de Texto (Actividad 4 PDF)
+### Búsqueda de Texto (Actividad 4 de la presentación vista en clase)
 ```bash
 # Usar herramienta MCP: search_text_in_file  
 # Ejemplo: search_text_in_file("./src/test/resources/examples/texto_para_buscar.txt", "java")
