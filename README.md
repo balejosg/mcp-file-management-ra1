@@ -67,12 +67,12 @@ mvn test
 
 Abre el archivo `src/main/java/com/dam/accesodatos/ra1/FileUserServiceImpl.java` y completa todos los métodos marcados con `TODO`.
 
-### Métodos a Implementar (18 total)
+### Métodos a Implementar (17 restantes - 1 ejemplo completado)
 
 #### CE1.a: Análisis de clases relacionadas con tratamiento de ficheros
 | Método | Tecnología | Descripción |
 |--------|------------|-------------|
-| `getFileInfo()` | File.length(), canRead(), SimpleDateFormat | Información detallada de archivos (actividad 1 de la presentación vista en clase) |
+| `getFileInfo()` | File.length(), canRead(), SimpleDateFormat | ✅ **EJEMPLO IMPLEMENTADO** - Información detallada de archivos (actividad 1 de la presentación vista en clase) |
 | `compareIOPerformance()` | System.currentTimeMillis(), FileReader vs BufferedReader | Comparación de rendimiento I/O con y sin buffering |
 | `compareNIOvsIO()` | Files.readAllLines() vs BufferedReader | Análisis comparativo java.nio vs java.io tradicional |
 
@@ -110,6 +110,52 @@ Abre el archivo `src/main/java/com/dam/accesodatos/ra1/FileUserServiceImpl.java`
 |--------|------------|-------------|
 | `readUsersFromCSV()` | BufferedReader, FileReader | Lee usuarios desde CSV con parsing manual |
 | `writeUsersToCSV()` | PrintWriter, FileWriter | Escribe usuarios a CSV con formateo manual |
+
+## 🎯 Ejemplo de Implementación Completada: get_file_info
+
+**¡Ya tienes un ejemplo funcional!** El método `getFileInfo()` está completamente implementado como referencia educativa.
+
+### Cómo Probar el Ejemplo
+```bash
+# 1. Ejecutar servidor MCP
+mvn spring-boot:run
+
+# 2. En otra terminal, probar con el cliente MCP
+chmod +x mcp-client.sh
+./mcp-client.sh get_file_info "/ruta/a/tu/archivo.txt"
+
+# 3. O usar curl directamente
+curl -X POST http://localhost:8081/test/get_file_info \
+  -H "Content-Type: application/json" \
+  -d '{"filePath": "/ruta/a/tu/archivo.txt"}'
+```
+
+### Qué Estudiar en el Ejemplo
+1. **Validación de entrada**: Comprobar que el archivo existe
+2. **Uso de File**: `file.length()`, `file.canRead()`, `file.canWrite()`, `file.canExecute()`
+3. **Formateo de fechas**: `SimpleDateFormat` con patrón `"dd/MM/yyyy HH:mm:ss"`
+4. **Construcción de respuesta**: String.format() para salida estructurada
+5. **Manejo de excepciones**: try-catch apropiado
+
+### Técnicas Java I/O Demostradas
+```java
+// Análisis de archivo usando java.io.File
+File file = new File(filePath);
+if (!file.exists()) return "Error: archivo no existe";
+
+// Información de permisos
+String permisos = "";
+permisos += file.canRead() ? "r" : "-";
+permisos += file.canWrite() ? "w" : "-";
+permisos += file.canExecute() ? "x" : "-";
+
+// Formateo de fecha usando SimpleDateFormat
+SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+Date fechaModificacion = new Date(file.lastModified());
+String fechaFormateada = formatter.format(fechaModificacion);
+```
+
+**💡 Consejo**: Estudia esta implementación antes de abordar los otros 17 métodos. Sigue el mismo patrón de validación, procesamiento y construcción de respuesta.
 
 ## 🧪 Metodología TDD (Test-Driven Development)
 
@@ -251,7 +297,13 @@ Para aprobar este RA1, debes:
 
 ## 🔧 Uso del Servidor MCP
 
-Una vez implementado, puedes probar las **18 herramientas MCP** disponibles:
+Una vez implementadas, puedes probar las **18 herramientas MCP** disponibles:
+
+### 🎯 Herramienta de Ejemplo (Ya Implementada)
+```bash
+# Probar get_file_info (ejemplo completado)
+./mcp-client.sh get_file_info "/ruta/a/archivo.txt"
+```
 
 ```bash
 # Ejecutar servidor MCP
@@ -260,7 +312,7 @@ mvn spring-boot:run
 # Herramientas disponibles organizadas por criterios de evaluación:
 
 # CE1.a: Análisis de clases
-# - get_file_info
+# - get_file_info ✅ (EJEMPLO IMPLEMENTADO)
 # - compare_io_performance  
 # - compare_nio_vs_io
 
@@ -289,6 +341,53 @@ mvn spring-boot:run
 # - read_users_csv
 # - write_users_csv
 ```
+
+## 🔧 Guía Completa del Sistema MCP
+
+### ¿Por Qué MCP en este Proyecto?
+
+**🎯 Objetivo Principal**: Aprender Java I/O, no MCP
+
+El protocolo MCP sirve como "envoltorio" que permite:
+1. **Probar tus implementaciones** de forma interactiva
+2. **Validar funcionamiento** sin escribir main() manuales
+3. **Experiencia con tecnología moderna** usada en aplicaciones de IA
+
+**⚠️ Importante**: El valor educativo está en las clases Java I/O (File, BufferedReader, SimpleDateFormat, etc.), no en el protocolo MCP.
+
+### Flujo de Trabajo Recomendado
+
+1. **Estudiar el ejemplo**: `getFileInfo()` ya implementado
+2. **Implementar método**: Siguiendo patrones del ejemplo
+3. **Ejecutar tests**: `mvn test -Dtest=FileUserServiceTest#testTuMetodo`
+4. **Probar con MCP**: Usar `mcp-client.sh` para validación interactiva
+5. **Repetir**: Para los 17 métodos restantes
+
+### Scripts de Ayuda Incluidos
+
+```bash
+# Cliente MCP simplificado
+./mcp-client.sh get_file_info "/ruta/archivo"    # Probar herramienta
+./mcp-client.sh list                            # Ver todas las herramientas
+./mcp-client.sh health                          # Estado del servidor
+
+# Servidor MCP (ejecutar en terminal separada)
+mvn spring-boot:run                            # Puerto 8081
+```
+
+### Estructura de Respuesta MCP
+
+Cada herramienta MCP devuelve:
+```json
+{
+  "tool": "get_file_info",
+  "input": "/ruta/archivo.txt", 
+  "result": "Tipo: archivo, Tamaño: 1024 bytes, Permisos: rw-, Fecha: 28/09/2025 10:30:15",
+  "status": "success"
+}
+```
+
+**📚 Para Estudiantes**: Concéntrate en que tu método Java devuelva el `result` correcto. El resto es infraestructura.
 
 ## 🆘 Ayuda y Recursos
 
