@@ -1,6 +1,8 @@
 spring:
   application:
     name: mcp-server-ra1-ficheros
+server:
+  port: 8081
   
   # Configuración MCP Server
   ai:

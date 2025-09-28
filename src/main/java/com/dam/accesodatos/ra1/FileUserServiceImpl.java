@@ -17,9 +17,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.nio.file.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,8 +77,39 @@ public class FileUserServiceImpl implements FileUserService {
          * - Date (para convertir timestamp)
          */
         
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar getFileInfo usando File y SimpleDateFormat");
+        // Paso 1: Crear objeto File con la ruta proporcionada
+        File file = new File(filePath);
+        
+        // Paso 2: Verificar que existe
+        if (!file.exists()) {
+            return "Error: El archivo o directorio no existe: " + filePath;
+        }
+        
+        // Paso 3: Determinar si es archivo o directorio
+        String tipo = file.isFile() ? "archivo" : "directorio";
+        
+        // Paso 4: Obtener tamaño (solo para archivos)
+        String tamaño;
+        if (file.isFile()) {
+            tamaño = file.length() + " bytes";
+        } else {
+            tamaño = "N/A (directorio)";
+        }
+        
+        // Paso 5: Obtener permisos
+        String permisos = "";
+        permisos += file.canRead() ? "r" : "-";
+        permisos += file.canWrite() ? "w" : "-";
+        permisos += file.canExecute() ? "x" : "-";
+        
+        // Paso 6: Formatear fecha de modificación
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date fechaModificacion = new Date(file.lastModified());
+        String fechaFormateada = formatter.format(fechaModificacion);
+        
+        // Paso 7: Construir string con formato especificado
+        return String.format("Tipo: %s, Tamaño: %s, Permisos: %s, Fecha: %s", 
+                           tipo, tamaño, permisos, fechaFormateada);
     }
 
     @Override
@@ -299,7 +332,7 @@ public class FileUserServiceImpl implements FileUserService {
          * 5. Retornar ruta del archivo temporal creado
          * 
          * NOTA: Los archivos temporales se crean en directorio del sistema
-         * (ej: C:\Users\usuario\AppData\Local\Temp en Windows)
+         * (ej: C:\\Users\\usuario\\AppData\\Local\\Temp en Windows)
          * 
          * Clases requeridas:
          * - File.createTempFile() (método estático)

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.dam.accesodatos.ra1.FileUserService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,9 @@ public class McpServerController {
     
     @Autowired
     private McpToolRegistry toolRegistry;
+    
+    @Autowired
+    private FileUserService fileUserService;
     
     /**
      * Endpoint para listar todas las herramientas MCP disponibles
@@ -102,5 +106,42 @@ public class McpServerController {
         docs.put("note", "Las herramientas están implementadas como esqueletos educativos para que los estudiantes las completen");
         
         return ResponseEntity.ok(docs);
+    }
+    
+    /**
+     * Endpoint de prueba para ejecutar getFileInfo (implementado por estudiante)
+     */
+    @PostMapping("/test/get_file_info")
+    public ResponseEntity<Map<String, Object>> testGetFileInfo(@RequestBody Map<String, String> request) {
+        logger.debug("Ejecutando prueba de getFileInfo");
+        
+        String filePath = request.get("filePath");
+        if (filePath == null || filePath.trim().isEmpty()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "El parámetro 'filePath' es requerido");
+            return ResponseEntity.badRequest().body(error);
+        }
+        
+        try {
+            String result = fileUserService.getFileInfo(filePath);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("tool", "get_file_info");
+            response.put("input", filePath);
+            response.put("result", result);
+            response.put("status", "success");
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error ejecutando getFileInfo para archivo: " + filePath, e);
+            
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Error ejecutando getFileInfo: " + e.getMessage());
+            error.put("tool", "get_file_info");
+            error.put("input", filePath);
+            error.put("status", "error");
+            
+            return ResponseEntity.status(500).body(error);
+        }
     }
 }
