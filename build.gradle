@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.0'
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.dam.accesodatos'
+version = '1.0.0'
+description = 'Esqueleto MCP para RA1: Gestión de información en ficheros'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/milestone'
+        content {
+            excludeGroup 'org.springframework.boot'
+        }
+    }
+    maven {
+        url 'https://repo.spring.io/snapshot'
+        content {
+            excludeGroup 'org.springframework.boot'
+        }
+    }
+}
+
+ext {
+    springAiVersion = '1.0.0-M1'
+}
+
+dependencies {
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring AI MCP Server - Comentado hasta que esté disponible
+    // implementation "org.springframework.ai:spring-ai-mcp-server-spring-boot-starter:${springAiVersion}"
+
+    // RA1: Gestión de ficheros - Solo dependencias necesarias
+
+    // Procesamiento XML
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+    // Procesamiento JSON (incluido en spring-boot-starter-web)
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // Validación
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Logging (incluido en spring-boot-starter)
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
