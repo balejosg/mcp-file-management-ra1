@@ -37,3 +37,12 @@ Thumbs.db
 
 # Data directories (for student work)
 data/
+
+# Local test files
+TestGetFileInfo.class
+TestGetFileInfo.java
+
+# MCP local configurations
+*mcp*.json
+*mcp*.js
+*.sh
