@@ -9,21 +9,29 @@ This is an educational MCP (Model Context Protocol) server for the RA1 module "G
 ## Common Development Commands
 
 ### Build and Test
+
+**Desde IntelliJ IDEA:**
+- **Build**: Botón "Build Project" (Ctrl+F9) o panel Gradle → Tasks → build → build
+- **Run tests**: Botón "Run Tests" o panel Gradle → Tasks → verification → test
+- **Run server**: Botón "Run" junto a McpAccesoDatosApplication.java o panel Gradle → Tasks → application → bootRun
+- **Gradle panel**: View → Tool Windows → Gradle
+
+**Desde línea de comandos (usando Gradle de IntelliJ):**
 ```bash
 # Clean and compile
-mvn clean compile
+gradle clean compileJava
 
 # Run all tests (will fail initially - this is expected)
-mvn test
+gradle test
 
 # Run specific test
-mvn test -Dtest=FileUserServiceTest#testReadUsersFromCSV_ReadsValidFile
+gradle test --tests FileUserServiceTest.testReadUsersFromCSV_ReadsValidFile
 
 # Run with debug logging
-mvn test -Dlogging.level.com.dam.accesodatos=DEBUG
+gradle test --debug
 
 # Start the MCP server
-mvn spring-boot:run
+gradle bootRun
 ```
 
 ### Project Structure Commands
@@ -101,7 +109,7 @@ Server runs on `localhost:3000` when started.
 - **File.createTempFile()** (temporary files)
 - **SimpleDateFormat** (date formatting)
 
-**Prohibited**: External libraries beyond those in pom.xml, JAXB automatic binding, copying implementations without understanding.
+**Prohibited**: External libraries beyond those in build.gradle, JAXB automatic binding, copying implementations without understanding.
 
 ## Implementation Notes
 

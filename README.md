@@ -47,19 +47,36 @@ src/
 
 ### 1. Prerrequisitos
 - Java 17+
-- Maven 3.8+
-- IDE (IntelliJ IDEA, Eclipse, VS Code)
+- IntelliJ IDEA (con Gradle integrado)
 
-### 2. Clonar y Ejecutar
+### 2. Clonar e Importar en IntelliJ
 ```bash
 git clone https://github.com/balejosg/mcp-file-management-ra1
 cd mcp-server-ra1-ficheros
-mvn clean compile
 ```
 
-### 3. Ejecutar Tests (Fallarán inicialmente)
+En IntelliJ IDEA:
+1. `File` → `Open` → Seleccionar la carpeta del proyecto
+2. IntelliJ detectará automáticamente `build.gradle` y configurará el proyecto
+3. Esperar a que Gradle sincronice las dependencias
+
+### 3. Compilar el Proyecto
+**Opción A - Desde IntelliJ:**
+- `Build` → `Build Project` (Ctrl+F9)
+
+**Opción B - Desde terminal:**
 ```bash
-mvn test
+gradle clean compileJava
+```
+
+### 4. Ejecutar Tests (Fallarán inicialmente)
+**Opción A - Desde IntelliJ:**
+- Botón derecho en `src/test/java` → `Run 'All Tests'`
+- O usar panel Gradle: `Tasks` → `verification` → `test`
+
+**Opción B - Desde terminal:**
+```bash
+gradle test
 ```
 > ⚠️ **Esperado:** Todos los tests fallan porque necesitas implementar los métodos
 
@@ -116,9 +133,15 @@ Abre el archivo `src/main/java/com/dam/accesodatos/ra1/FileUserServiceImpl.java`
 **¡Ya tienes un ejemplo funcional!** El método `getFileInfo()` está completamente implementado como referencia educativa.
 
 ### Cómo Probar el Ejemplo
+**Opción A - Desde IntelliJ:**
+1. Ejecutar servidor: Botón derecho en `McpAccesoDatosApplication.java` → `Run`
+   - O usar panel Gradle: `Tasks` → `application` → `bootRun`
+2. Probar con cliente MCP (ver sección "Uso del Servidor MCP" más abajo)
+
+**Opción B - Desde terminal:**
 ```bash
 # 1. Ejecutar servidor MCP
-mvn spring-boot:run
+gradle bootRun
 
 # 2. En otra terminal, probar con el cliente MCP
 chmod +x mcp-client.sh
@@ -163,9 +186,13 @@ String fechaFormateada = formatter.format(fechaModificacion);
 2. **🟢 VERDE:** Implementa código mínimo → Tests pasan
 3. **🔵 REFACTOR:** Mejora código → Tests siguen pasando
 
+**Desde IntelliJ:**
+- Botón derecho en un test específico → `Run 'testReadUsersFromCSV_ReadsValidFile()'`
+
+**Desde terminal:**
 ```bash
 # Ejecutar tests específicos
-mvn test -Dtest=FileUserServiceTest#testReadUsersFromCSV_ReadsValidFile
+gradle test --tests FileUserServiceTest.testReadUsersFromCSV_ReadsValidFile
 ```
 
 ## 💡 Ejemplos de Implementación
@@ -307,13 +334,14 @@ Una vez implementadas, puedes probar las **18 herramientas MCP** disponibles:
 
 ```bash
 # Ejecutar servidor MCP
-mvn spring-boot:run
+# Opción 1 (IntelliJ): Run → McpAccesoDatosApplication
+# Opción 2 (Terminal): gradle bootRun
 
 # Herramientas disponibles organizadas por criterios de evaluación:
 
 # CE1.a: Análisis de clases
 # - get_file_info ✅ (EJEMPLO IMPLEMENTADO)
-# - compare_io_performance  
+# - compare_io_performance
 # - compare_nio_vs_io
 
 # CE1.b: Flujos de datos
@@ -359,7 +387,9 @@ El protocolo MCP sirve como "envoltorio" que permite:
 
 1. **Estudiar el ejemplo**: `getFileInfo()` ya implementado
 2. **Implementar método**: Siguiendo patrones del ejemplo
-3. **Ejecutar tests**: `mvn test -Dtest=FileUserServiceTest#testTuMetodo`
+3. **Ejecutar tests**:
+   - IntelliJ: Botón derecho en test → `Run`
+   - Terminal: `gradle test --tests FileUserServiceTest.testTuMetodo`
 4. **Probar con MCP**: Usar `mcp-client.sh` para validación interactiva
 5. **Repetir**: Para los 17 métodos restantes
 
@@ -372,7 +402,8 @@ El protocolo MCP sirve como "envoltorio" que permite:
 ./mcp-client.sh health                          # Estado del servidor
 
 # Servidor MCP (ejecutar en terminal separada)
-mvn spring-boot:run                            # Puerto 8081
+gradle bootRun                                  # Puerto 8081
+# O desde IntelliJ: Run → McpAccesoDatosApplication
 ```
 
 ### Estructura de Respuesta MCP
@@ -412,12 +443,17 @@ Revisa los archivos en `src/test/resources/examples/` para practicar todos los c
 - `README_ejemplos.md` - Guía detallada de uso de todos los archivos
 
 ### Debugging
+**Desde IntelliJ:**
+- Tests con breakpoints: Click en margen izquierdo → Debug test
+- Ver logs: Panel "Run" muestra salida completa
+
+**Desde terminal:**
 ```bash
 # Tests con logs detallados
-mvn test -Dlogging.level.com.dam.accesodatos=DEBUG
+gradle test --debug
 
 # Test individual
-mvn test -Dtest=FileUserServiceTest#testWriteUsersToCSV_CreatesValidFile
+gradle test --tests FileUserServiceTest.testWriteUsersToCSV_CreatesValidFile
 ```
 
 ## 📞 Soporte
