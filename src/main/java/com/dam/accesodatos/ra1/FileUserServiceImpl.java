@@ -134,8 +134,62 @@ public class FileUserServiceImpl implements FileUserService {
          *  Mejora: 96.4% más rápido con buffer"
          */
         
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar compareIOPerformance con medición de tiempo");
+        /*
+        * Primero Iniciamos todas las variables:
+        * Un File para mas tarde comprobar si existe este mismo
+        * Y 5 variables Long con las que vamos a medir los tiempos
+        * y hacer la comparación*/
+        File file = new File(filePath);
+        long tiempoInicial;
+        long tiempoFileReader;
+        long tiempoBufferReader;
+        long tiempoFinalFR;
+        long tiempoFinalBR;
+        double porMejora;
+
+        //Comprobamos si existe el archivo
+        if (file.exists()) {
+            /*Abrimos un file reader en un Try with Resources para abrir el file reader
+              calculamos los tiemos mientras siga leyendo y calculamos la diferencia
+              entre el inicial y el momento en el que ha terminado de leerlo
+             */
+            try(FileReader FR=new FileReader(filePath)){
+                tiempoInicial=System.currentTimeMillis();
+                while(FR.read()!=-1){}
+                tiempoFileReader=System.currentTimeMillis();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            tiempoFinalFR=tiempoFileReader-tiempoInicial;
+            /*Abrimos un file reader en un Try with Resources para abrir el buffer reader
+              calculamos los tiemos mientras siga leyendo y calculamos la diferencia
+              entre el inicial y el momento en el que ha terminado de leerlo
+             */
+            try (BufferedReader BR=new BufferedReader(new FileReader(filePath))) {
+                tiempoInicial=System.currentTimeMillis();
+                while(BR.readLine()!=null){}
+                tiempoBufferReader=System.currentTimeMillis();
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            tiempoFinalBR=tiempoBufferReader-tiempoInicial;
+            porMejora = ((double) (tiempoFinalFR - tiempoFinalBR) / tiempoFinalFR) * 100;
+
+
+            //Retornamos los tiempos de cada Reader
+            return "FileReader:"+tiempoFinalFR+" ms "+
+                    "BufferReader "+tiempoFinalBR+" ms"+
+                    "Mejora del "+porMejora+"%";
+
+
+        }else{
+            return "No existe el archivo con la ruta: "+filePath;
+        }
     }
 
     @Override
@@ -161,9 +215,69 @@ public class FileUserServiceImpl implements FileUserService {
          *  NIO: 3 líneas de código, 32ms
          *  NIO es más conciso y eficiente"
          */
-        
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar compareNIOvsIO usando Files vs BufferedReader");
+
+        /*
+         * Primero Iniciamos todas las variables:
+         * Un File para mas tarde comprobar si existe este mismo
+         * Y 5 variables Long con las que vamos a medir los tiempos
+         * y hacer la comparación, además de dos más para guardar
+         * el numerode lineas y otra que es una lista con las lneas del archivo*/
+        File file = new File(filePath);
+        long tiempoInicial;
+        long tiempoIO;
+        long tiempoNIO;
+        long tiempoFinalIO;
+        long tiempoFinalNIO;
+        int contNumIO=0;
+        int contNumNIO;
+        List<String> todasLasLineas;
+
+        //guardamos la ruta en una variable path
+        Path ruta = Paths.get(filePath);
+
+        if (file.exists()) {
+
+            try(BufferedReader bufferedReader=new BufferedReader(new FileReader(filePath))){
+
+                tiempoInicial=System.currentTimeMillis();
+                while(bufferedReader.readLine()!=null){ contNumIO++;}
+                tiempoIO=System.currentTimeMillis();
+
+            } catch (
+                    FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            tiempoFinalIO=tiempoIO-tiempoInicial;
+
+
+            try{
+                tiempoInicial=System.currentTimeMillis();
+                todasLasLineas = Files.readAllLines(ruta);
+                contNumNIO=todasLasLineas.size();
+                tiempoNIO=System.currentTimeMillis();
+
+            } catch (
+                    FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            tiempoFinalNIO=tiempoNIO-tiempoInicial;
+
+            //Retornamos los tiempos de cada forma
+            return "IO:"+tiempoFinalIO+" ms con "+contNumIO+" lineas"+
+                    "NIO:"+tiempoFinalNIO+" ms con "+contNumNIO+" lineas";
+
+        }else {
+            return "No existe el archivo con la ruta: "+filePath;
+        }
+
+
+
+
     }
 
     // ========================================================================================
@@ -189,9 +303,31 @@ public class FileUserServiceImpl implements FileUserService {
          *  Línea 12: otra línea con el texto
          *  Total: 2 ocurrencias encontradas"
          */
-        
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar searchTextInFile usando BufferedReader");
+
+        File file=new File(filePath);
+        ArrayList<Integer> apariciones=new ArrayList<>();
+        int nApariciones=0;
+        int nLinea=1;
+
+        if(file.exists()){
+            try(BufferedReader br=new BufferedReader(new FileReader(file))){
+                String line;
+                while((line = br.readLine())!=null){
+                    if(line.contains(searchText)){
+                        apariciones.add(nLinea);
+                        nApariciones++;
+                    }
+                    nLinea++;
+                }
+            }catch(IOException e){
+                throw new RuntimeException("Error de lectura al buscar texto: " + e.getMessage(), e);
+            }
+            return "Aparece "+nApariciones+" veces," +
+                    "en las lineas"+apariciones.toString();
+        }else{
+            return "No existe el archivo con la ruta: "+filePath;
+        }
+
     }
 
     @Override
