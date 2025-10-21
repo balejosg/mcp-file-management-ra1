@@ -141,7 +141,8 @@ public class FileUserServiceImpl implements FileUserService {
     @Override
     public String compareNIOvsIO(String filePath) {
         /*
-         * TODO CE1.a: Implementar comparación entre enfoques NIO y IO tradicional
+         * TODO [OPCIONAL CE1.a]: Implementar comparación entre enfoques NIO y IO tradicional
+         * ⚠️ MÉTODO OPCIONAL - Concepto avanzado NIO. Prioriza getFileInfo() y compareIOPerformance()
          * 
          * Pasos requeridos:
          * 1. Enfoque tradicional (java.io):
@@ -293,7 +294,8 @@ public class FileUserServiceImpl implements FileUserService {
     @Override
     public boolean validateDirectoryStructure(String basePath) {
         /*
-         * TODO CE1.c: Implementar validación de estructura de directorios
+         * TODO [OPCIONAL CE1.c]: Implementar validación de estructura de directorios
+         * ⚠️ MÉTODO OPCIONAL - Muy utilitario. Prioriza listUserFiles() primero
          * 
          * Pasos requeridos:
          * 1. Definir estructura esperada (ej: data/, exports/, temp/)
@@ -322,7 +324,8 @@ public class FileUserServiceImpl implements FileUserService {
     @Override
     public String createTempFile(String prefix, String content) {
         /*
-         * TODO CE1.c: Implementar creación de archivo temporal
+         * TODO [OPCIONAL CE1.b]: Implementar creación de archivo temporal
+         * ⚠️ MÉTODO OPCIONAL - Poco valor sobre flujos. Prioriza searchTextInFile(), randomAccessRead(), convertFileEncoding()
          * 
          * Pasos requeridos:
          * 1. Usar File.createTempFile(prefix, ".tmp") para crear archivo temporal
@@ -346,7 +349,8 @@ public class FileUserServiceImpl implements FileUserService {
     @Override
     public String formatTextFile(String sourceFile) {
         /*
-         * TODO CE1.c: Implementar formateador basado en ejemplo ArreglarFichero de la presentación vista en clase
+         * TODO [OPCIONAL CE1.b]: Implementar formateador basado en ejemplo ArreglarFichero de la presentación vista en clase
+         * ⚠️ MÉTODO OPCIONAL - Más String que I/O. Prioriza searchTextInFile() primero
          * 
          * Pasos requeridos (basado en ArreglarFichero de la presentación):
          * 1. Validar que archivo origen existe
@@ -435,7 +439,8 @@ public class FileUserServiceImpl implements FileUserService {
     @Override
     public List<User> readUsersFromXMLSAX(String filePath) {
         /*
-         * TODO CE1.d: Implementar lectura de XML usando SAX parser (alternativa eficiente)
+         * TODO [OPCIONAL CE1.d]: Implementar lectura de XML usando SAX parser (alternativa eficiente)
+         * ⚠️ MÉTODO OPCIONAL - Concepto avanzado. Prioriza readUsersFromXML() con DOM primero
          * 
          * Pasos requeridos:
          * 1. Crear SAXParserFactory y SAXParser

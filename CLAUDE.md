@@ -77,23 +77,41 @@ The project uses Test-Driven Development:
 
 ## MCP Server Configuration
 
-The server exposes **18 tools** via `application.yml`:
+The server exposes **18 tools** via `application.yml` (13 essential + 5 optional):
 
-### Core File Processing Tools (Original RA1):
-- `read_users_csv`, `write_users_csv` 
-- `read_users_json`, `write_users_json`
-- `read_users_xml_dom`, `write_users_xml`, `read_users_xml_sax`
-- `list_user_files`, `validate_directory_structure`
+### ✅ Core Tools - REQUIRED (13 essential methods)
 
-### Extended Tools (Based on PDF Theoretical Concepts):
-- `get_file_info` - File/directory information (Actividad 1 PDF)
-- `search_text_in_file` - Text search in files (Actividad 4 PDF)
+Students must implement these to demonstrate mastery of RA1 fundamentals:
+
+**File Formats (CE1.d, CE1.e, CE1.f):**
+- `read_users_csv`, `write_users_csv` - CSV parsing and formatting
+- `read_users_json`, `write_users_json` - JSON with Jackson
+- `read_users_xml_dom`, `write_users_xml` - XML with DOM parser
+
+**File Analysis (CE1.a):**
+- `get_file_info` - File metadata (Actividad 1 PDF) - **IMPLEMENTED EXAMPLE**
 - `compare_io_performance` - BufferedReader vs FileReader comparison
+
+**Stream Operations (CE1.b):**
+- `search_text_in_file` - Text search with BufferedReader (Actividad 4 PDF)
 - `random_access_read`, `random_access_write` - RandomAccessFile operations
-- `convert_file_encoding` - Character encoding conversion (UTF-8, ISO-8859-1)
-- `create_temp_file` - Temporary file creation
-- `compare_nio_vs_io` - java.nio.file.Files vs traditional java.io comparison
-- `format_text_file` - Text formatting (spaces, capitalization)
+- `convert_file_encoding` - InputStreamReader/OutputStreamWriter with charsets
+
+**File Management (CE1.c):**
+- `list_user_files` - Directory navigation and filtering
+
+### ⚠️ Optional Tools - ADVANCED (5 additional methods)
+
+These methods are less important didactically. Prioritize core tools first:
+
+- `read_users_xml_sax` - [OPCIONAL] SAX parser (advanced alternative to DOM)
+- `validate_directory_structure` - [OPCIONAL] Utility method, little pedagogical value
+- `create_temp_file` - [OPCIONAL] Specific utility, teaches little about streams
+- `compare_nio_vs_io` - [OPCIONAL] Advanced NIO concepts
+- `format_text_file` - [OPCIONAL] More String processing than I/O
+
+**Pedagogical Note:** Optional methods are for advanced students who have mastered core concepts.
+They provide less educational value for learning Java I/O fundamentals compared to the 13 essential methods.
 
 Server runs on `localhost:3000` when started.
 

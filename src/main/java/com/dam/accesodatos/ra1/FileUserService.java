@@ -141,19 +141,23 @@ public interface FileUserService {
     boolean writeUsersToXML(List<User> users, String filePath);
 
     /**
-     * CE1.d: Lee usuarios desde archivo XML usando SAX parser (alternativa a DOM)
-     * 
+     * [OPCIONAL - Concepto avanzado] CE1.d: Lee usuarios desde archivo XML usando SAX parser (alternativa a DOM)
+     *
+     * ⚠️ MÉTODO OPCIONAL: SAX es un parser por eventos más complejo que DOM.
+     * Prioriza primero readUsersFromXML() con DOM que es más intuitivo y estándar.
+     * Este método es para estudiantes que quieran profundizar en parsers alternativos.
+     *
      * Implementación requerida:
      * - Usar SAXParser para parsing por eventos
      * - Implementar DefaultHandler personalizado
      * - Gestión de estado durante parsing
      * - Más eficiente para archivos grandes
-     * 
+     *
      * @param filePath Ruta absoluta del archivo XML
      * @return Lista de usuarios leídos
      * @throws RuntimeException si hay error de parsing SAX
      */
-    @Tool(name = "read_users_xml_sax", 
+    @Tool(name = "read_users_xml_sax",
           description = "Lee usuarios desde archivo XML usando SAX parser")
     List<User> readUsersFromXMLSAX(String filePath);
 
@@ -175,19 +179,23 @@ public interface FileUserService {
     List<String> listUserFiles(String directoryPath);
 
     /**
-     * CE1.c: Valida la estructura de un directorio de datos
-     * 
+     * [OPCIONAL - Muy utilitario] CE1.c: Valida la estructura de un directorio de datos
+     *
+     * ⚠️ MÉTODO OPCIONAL: Es una utilidad de infraestructura con poco valor pedagógico.
+     * Prioriza primero listUserFiles() que enseña mejor navegación y filtrado de directorios.
+     * Este método es más apropiado para proyectos reales que para aprendizaje de conceptos.
+     *
      * Implementación requerida:
      * - Verificar que directorios existen
      * - Crear directorios faltantes
      * - Validar permisos de lectura/escritura
      * - Reportar estado del sistema de archivos
-     * 
+     *
      * @param basePath Ruta base donde validar estructura
      * @return true si la estructura es válida o fue creada correctamente
      * @throws RuntimeException si hay problemas de permisos
      */
-    @Tool(name = "validate_directory_structure", 
+    @Tool(name = "validate_directory_structure",
           description = "Valida y crea estructura de directorios para datos de usuario")
     boolean validateDirectoryStructure(String basePath);
 
@@ -305,56 +313,70 @@ public interface FileUserService {
                                String sourceCharset, String targetCharset);
 
     /**
-     * ARCHIVOS TEMPORALES: Crea archivo temporal y devuelve información
-     * 
+     * [OPCIONAL - Poco valor sobre flujos] ARCHIVOS TEMPORALES: Crea archivo temporal y devuelve información
+     *
+     * ⚠️ MÉTODO OPCIONAL: Enseña poco sobre flujos de datos (CE1.b).
+     * Prioriza métodos como searchTextInFile(), randomAccessRead() y convertFileEncoding()
+     * que profundizan en BufferedReader, RandomAccessFile e InputStreamReader/OutputStreamWriter.
+     * Este método es muy específico y utilitario.
+     *
      * Implementación requerida:
      * - Usar File.createTempFile()
      * - Escribir contenido en archivo temporal
      * - Mostrar ruta del archivo temporal creado
      * - Manejar limpieza de recursos
-     * 
+     *
      * @param prefix Prefijo del nombre del archivo temporal
      * @param content Contenido a escribir en el archivo
      * @return String con ruta del archivo temporal creado
      * @throws RuntimeException si hay error de creación
      */
-    @Tool(name = "create_temp_file", 
+    @Tool(name = "create_temp_file",
           description = "Crea archivo temporal y devuelve su ubicación")
     String createTempFile(String prefix, String content);
 
     /**
-     * NIO vs IO: Compara operaciones usando java.nio.file.Files vs java.io.File
-     * 
+     * [OPCIONAL - Concepto avanzado NIO] NIO vs IO: Compara operaciones usando java.nio.file.Files vs java.io.File
+     *
+     * ⚠️ MÉTODO OPCIONAL: NIO es un tema avanzado que puede confundir a estudiantes.
+     * Prioriza primero getFileInfo() y compareIOPerformance() que enseñan fundamentos
+     * de File clásico y comparación BufferedReader vs FileReader.
+     * Este método es para estudiantes avanzados que quieran conocer evolución del API.
+     *
      * Implementación requerida:
      * - Realizar misma operación con Files.readAllLines() y BufferedReader
      * - Comparar sintaxis y rendimiento
      * - Mostrar diferencias en manejo de errores
      * - Usar Path vs File para operaciones
-     * 
+     *
      * @param filePath Ruta del archivo a procesar
      * @return String con comparación de ambos enfoques
      * @throws RuntimeException si hay error en operaciones
      */
-    @Tool(name = "compare_nio_vs_io", 
+    @Tool(name = "compare_nio_vs_io",
           description = "Compara java.nio.file.Files vs java.io tradicional")
     String compareNIOvsIO(String filePath);
 
     /**
-     * PROCESAMIENTO DE TEXTO: Formatea archivo eliminando espacios y aplicando mayúsculas
+     * [OPCIONAL - Más String que I/O] PROCESAMIENTO DE TEXTO: Formatea archivo eliminando espacios y aplicando mayúsculas
      * Basado en el ejemplo del PDF (ArreglarFichero)
-     * 
+     *
+     * ⚠️ MÉTODO OPCIONAL: Se enfoca más en procesamiento de Strings que en flujos I/O.
+     * Prioriza searchTextInFile() que enseña mejor BufferedReader y lectura línea por línea.
+     * Este método es útil pero no aporta conceptos nuevos sobre gestión de flujos (CE1.b).
+     *
      * Implementación requerida:
      * - Leer archivo línea por línea
      * - Eliminar espacios al inicio de línea
      * - Sustituir múltiples espacios por uno solo
      * - Convertir primera letra de línea a mayúscula
      * - Crear archivo temporal con resultado
-     * 
+     *
      * @param sourceFile Archivo origen a formatear
      * @return String con ruta del archivo temporal formateado
      * @throws RuntimeException si hay error de procesamiento
      */
-    @Tool(name = "format_text_file", 
+    @Tool(name = "format_text_file",
           description = "Formatea texto eliminando espacios extra y aplicando mayúsculas")
     String formatTextFile(String sourceFile);
 }

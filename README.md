@@ -84,49 +84,87 @@ gradle test
 
 Abre el archivo `src/main/java/com/dam/accesodatos/ra1/FileUserServiceImpl.java` y completa todos los métodos marcados con `TODO`.
 
-### Métodos a Implementar (17 restantes - 1 ejemplo completado)
+### Métodos a Implementar: 13 ESENCIALES + 5 OPCIONALES
+
+**Total:** 18 métodos (1 ejemplo implementado = `getFileInfo()`)
+- **✅ 12 ESENCIALES restantes** - Obligatorios para demostrar dominio del RA1
+- **⚠️ 5 OPCIONALES** - Para estudiantes avanzados que quieran profundizar
+
+**Recomendación:** Implementa primero los 13 métodos esenciales. Los opcionales son conceptos avanzados.
 
 #### CE1.a: Análisis de clases relacionadas con tratamiento de ficheros
-| Método | Tecnología | Descripción |
-|--------|------------|-------------|
-| `getFileInfo()` | File.length(), canRead(), SimpleDateFormat | ✅ **EJEMPLO IMPLEMENTADO** - Información detallada de archivos (actividad 1 de la presentación vista en clase) |
-| `compareIOPerformance()` | System.currentTimeMillis(), FileReader vs BufferedReader | Comparación de rendimiento I/O con y sin buffering |
-| `compareNIOvsIO()` | Files.readAllLines() vs BufferedReader | Análisis comparativo java.nio vs java.io tradicional |
+| Prioridad | Método | Tecnología | Descripción |
+|-----------|--------|------------|-------------|
+| ✅ EJEMPLO | `getFileInfo()` | File.length(), canRead(), SimpleDateFormat | **EJEMPLO IMPLEMENTADO** - Información detallada de archivos (actividad 1 de la presentación vista en clase) |
+| ✅ ESENCIAL | `compareIOPerformance()` | System.currentTimeMillis(), FileReader vs BufferedReader | Comparación de rendimiento I/O con y sin buffering |
+| ⚠️ OPCIONAL | `compareNIOvsIO()` | Files.readAllLines() vs BufferedReader | [OPCIONAL - Concepto avanzado NIO] Análisis comparativo java.nio vs java.io tradicional |
 
 #### CE1.b: Utilización de flujos para acceso a información en ficheros
-| Método | Tecnología | Descripción |
-|--------|------------|-------------|
-| `searchTextInFile()` | BufferedReader + String.contains() | Búsqueda de texto en archivos (actividad 4 de la presentación vista en clase) |
-| `randomAccessRead()` | RandomAccessFile + seek() | Lectura desde posición específica |
-| `randomAccessWrite()` | RandomAccessFile + seek() | Escritura en posición específica |
-| `convertFileEncoding()` | InputStreamReader/OutputStreamWriter | Conversión entre codificaciones (UTF-8, ISO-8859-1) |
+| Prioridad | Método | Tecnología | Descripción |
+|-----------|--------|------------|-------------|
+| ✅ ESENCIAL | `searchTextInFile()` | BufferedReader + String.contains() | Búsqueda de texto en archivos (actividad 4 de la presentación vista en clase) |
+| ✅ ESENCIAL | `randomAccessRead()` | RandomAccessFile + seek() | Lectura desde posición específica |
+| ✅ ESENCIAL | `randomAccessWrite()` | RandomAccessFile + seek() | Escritura en posición específica |
+| ✅ ESENCIAL | `convertFileEncoding()` | InputStreamReader/OutputStreamWriter | Conversión entre codificaciones (UTF-8, ISO-8859-1) |
 
 #### CE1.c: Utilización de clases para gestión de ficheros y directorios
-| Método | Tecnología | Descripción |
-|--------|------------|-------------|
-| `listUserFiles()` | Files.list() | Lista archivos de usuario en directorio |
-| `validateDirectoryStructure()` | Files API | Valida y crea estructura de directorios |
-| `createTempFile()` | File.createTempFile() | Creación y gestión de archivos temporales |
-| `formatTextFile()` | Character processing | Procesamiento de texto avanzado (basado en ejemplo ArreglarFichero de la presentación vista en clase) |
+| Prioridad | Método | Tecnología | Descripción |
+|-----------|--------|------------|-------------|
+| ✅ ESENCIAL | `listUserFiles()` | Files.list() | Lista archivos de usuario en directorio |
+| ⚠️ OPCIONAL | `validateDirectoryStructure()` | Files API | [OPCIONAL - Muy utilitario] Valida y crea estructura de directorios |
+| ⚠️ OPCIONAL | `createTempFile()` | File.createTempFile() | [OPCIONAL - Poco valor sobre flujos] Creación y gestión de archivos temporales |
+| ⚠️ OPCIONAL | `formatTextFile()` | Character processing | [OPCIONAL - Más String que I/O] Procesamiento de texto avanzado (basado en ejemplo ArreglarFichero de la presentación vista en clase) |
 
 #### CE1.d: Escritura y lectura de información en formato XML
-| Método | Tecnología | Descripción |
-|--------|------------|-------------|
-| `readUsersFromXML()` | DOM Parser | Lee usuarios desde XML usando DOM |
-| `writeUsersToXML()` | DOM + Transformer | Escribe usuarios a XML usando DOM |
-| `readUsersFromXMLSAX()` | SAX Parser | Lee usuarios desde XML usando SAX (alternativa eficiente) |
+| Prioridad | Método | Tecnología | Descripción |
+|-----------|--------|------------|-------------|
+| ✅ ESENCIAL | `readUsersFromXML()` | DOM Parser | Lee usuarios desde XML usando DOM |
+| ✅ ESENCIAL | `writeUsersToXML()` | DOM + Transformer | Escribe usuarios a XML usando DOM |
+| ⚠️ OPCIONAL | `readUsersFromXMLSAX()` | SAX Parser | [OPCIONAL - Concepto avanzado] Lee usuarios desde XML usando SAX (alternativa eficiente) |
 
 #### CE1.e: Escritura y lectura de información en formato JSON
-| Método | Tecnología | Descripción |
-|--------|------------|-------------|
-| `readUsersFromJSON()` | Jackson ObjectMapper | Lee usuarios desde JSON |
-| `writeUsersToJSON()` | Jackson ObjectMapper | Escribe usuarios a JSON con formato pretty-print |
+| Prioridad | Método | Tecnología | Descripción |
+|-----------|--------|------------|-------------|
+| ✅ ESENCIAL | `readUsersFromJSON()` | Jackson ObjectMapper | Lee usuarios desde JSON |
+| ✅ ESENCIAL | `writeUsersToJSON()` | Jackson ObjectMapper | Escribe usuarios a JSON con formato pretty-print |
 
 #### CE1.f: Escritura y lectura de información en otros formatos estándar
-| Método | Tecnología | Descripción |
-|--------|------------|-------------|
-| `readUsersFromCSV()` | BufferedReader, FileReader | Lee usuarios desde CSV con parsing manual |
-| `writeUsersToCSV()` | PrintWriter, FileWriter | Escribe usuarios a CSV con formateo manual |
+| Prioridad | Método | Tecnología | Descripción |
+|-----------|--------|------------|-------------|
+| ✅ ESENCIAL | `readUsersFromCSV()` | BufferedReader, FileReader | Lee usuarios desde CSV con parsing manual |
+| ✅ ESENCIAL | `writeUsersToCSV()` | PrintWriter, FileWriter | Escribe usuarios a CSV con formateo manual |
+
+### 📋 Orden de Implementación Sugerido
+
+**Fase 1: Fundamentos (Métodos ESENCIALES - CE1.f)**
+1. `readUsersFromCSV()` - Aprende parsing manual y BufferedReader
+2. `writeUsersToCSV()` - Aprende PrintWriter y formateo
+
+**Fase 2: Formatos Estructurados (Métodos ESENCIALES - CE1.e, CE1.d)**
+3. `readUsersFromJSON()` - Aprende Jackson ObjectMapper
+4. `writeUsersToJSON()` - Aprende serialización JSON
+5. `readUsersFromXML()` - Aprende DOM parser
+6. `writeUsersToXML()` - Aprende DOM + Transformer
+
+**Fase 3: Flujos y Búsqueda (Métodos ESENCIALES - CE1.b, CE1.a, CE1.c)**
+7. `searchTextInFile()` - Practica BufferedReader línea por línea
+8. `compareIOPerformance()` - Compara FileReader vs BufferedReader
+9. `listUserFiles()` - Aprende navegación de directorios
+
+**Fase 4: Acceso Avanzado (Métodos ESENCIALES - CE1.b)**
+10. `randomAccessRead()` - Aprende RandomAccessFile
+11. `randomAccessWrite()` - Practica seek() y escritura posicional
+12. `convertFileEncoding()` - Aprende InputStreamReader/OutputStreamWriter
+
+**Fase 5 (OPCIONAL): Conceptos Avanzados**
+
+Solo si dominas los 13 métodos esenciales:
+
+13. ⚠️ `readUsersFromXMLSAX()` - SAX parser (alternativa avanzada a DOM)
+14. ⚠️ `compareNIOvsIO()` - NIO vs IO (conceptos java.nio.file)
+15. ⚠️ `validateDirectoryStructure()` - Utilidad de infraestructura
+16. ⚠️ `createTempFile()` - Creación de archivos temporales
+17. ⚠️ `formatTextFile()` - Procesamiento avanzado de texto
 
 ## 🎯 Ejemplo de Implementación Completada: get_file_info
 
