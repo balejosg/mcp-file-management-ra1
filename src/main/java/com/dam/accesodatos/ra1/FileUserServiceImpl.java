@@ -3,24 +3,13 @@ package com.dam.accesodatos.ra1;
 import com.dam.accesodatos.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
-import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -140,12 +129,11 @@ public class FileUserServiceImpl implements FileUserService {
         * Y 5 variables Long con las que vamos a medir los tiempos
         * y hacer la comparación*/
         File file = new File(filePath);
-        long tiempoInicial;
-        long tiempoFileReader;
-        long tiempoBufferReader;
-        long tiempoFinalFR;
-        long tiempoFinalBR;
+        long tiempoInicial=0;
         double porMejora;
+
+        long tiempoFileReader = 0;
+        long tiempoFinalFR;
 
         //Comprobamos si existe el archivo
         if (file.exists()) {
@@ -153,30 +141,28 @@ public class FileUserServiceImpl implements FileUserService {
               calculamos los tiemos mientras siga leyendo y calculamos la diferencia
               entre el inicial y el momento en el que ha terminado de leerlo
              */
-            try(FileReader FR=new FileReader(filePath)){
+            try(FileReader fr=new FileReader(file)){
                 tiempoInicial=System.currentTimeMillis();
-                while(FR.read()!=-1){}
+                while(fr.read()!=-1){}
                 tiempoFileReader=System.currentTimeMillis();
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            }catch (IOException e){e.printStackTrace();}
+
             tiempoFinalFR=tiempoFileReader-tiempoInicial;
             /*Abrimos un file reader en un Try with Resources para abrir el buffer reader
               calculamos los tiemos mientras siga leyendo y calculamos la diferencia
               entre el inicial y el momento en el que ha terminado de leerlo
              */
+
+            long tiempoBufferReader=0;
+            long tiempoFinalBR;
+
             try (BufferedReader BR=new BufferedReader(new FileReader(filePath))) {
                 tiempoInicial=System.currentTimeMillis();
                 while(BR.readLine()!=null){}
                 tiempoBufferReader=System.currentTimeMillis();
 
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            } catch (IOException e) {e.printStackTrace();}
+
             tiempoFinalBR=tiempoBufferReader-tiempoInicial;
             porMejora = ((double) (tiempoFinalFR - tiempoFinalBR) / tiempoFinalFR) * 100;
 
@@ -223,13 +209,13 @@ public class FileUserServiceImpl implements FileUserService {
          * y hacer la comparación, además de dos más para guardar
          * el numerode lineas y otra que es una lista con las lneas del archivo*/
         File file = new File(filePath);
-        long tiempoInicial;
-        long tiempoIO;
-        long tiempoNIO;
+        long tiempoInicial=0;
+        long tiempoIO=0;
+        long tiempoNIO=0;
         long tiempoFinalIO;
         long tiempoFinalNIO;
         int contNumIO=0;
-        int contNumNIO;
+        int contNumNIO=0;
         List<String> todasLasLineas;
 
         //guardamos la ruta en una variable path
@@ -243,12 +229,7 @@ public class FileUserServiceImpl implements FileUserService {
                 while(bufferedReader.readLine()!=null){ contNumIO++;}
                 tiempoIO=System.currentTimeMillis();
 
-            } catch (
-                    FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            } catch (IOException e) {e.printStackTrace();}
 
             tiempoFinalIO=tiempoIO-tiempoInicial;
 
@@ -259,12 +240,8 @@ public class FileUserServiceImpl implements FileUserService {
                 contNumNIO=todasLasLineas.size();
                 tiempoNIO=System.currentTimeMillis();
 
-            } catch (
-                    FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            }catch (IOException e) {e.printStackTrace();}
+
             tiempoFinalNIO=tiempoNIO-tiempoInicial;
 
             //Retornamos los tiempos de cada forma
@@ -320,10 +297,10 @@ public class FileUserServiceImpl implements FileUserService {
                     nLinea++;
                 }
             }catch(IOException e){
-                throw new RuntimeException("Error de lectura al buscar texto: " + e.getMessage(), e);
+                 e.getMessage();
             }
             return "Aparece "+nApariciones+" veces," +
-                    "en las lineas"+apariciones.toString();
+                    "en las lineas"+apariciones;
         }else{
             return "No existe el archivo con la ruta: "+filePath;
         }
@@ -348,9 +325,21 @@ public class FileUserServiceImpl implements FileUserService {
          * - RandomAccessFile (constructor con modo "r", seek, read)
          * - String constructor para convertir bytes
          */
-        
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar randomAccessRead usando RandomAccessFile");
+
+        File file=new File(filePath);
+        byte[] bf=new byte[length];
+        int bytesLeidos=0;
+
+        if(!file.exists()){return "No existe el archivo con la ruta: "+filePath;}
+
+        try (RandomAccessFile raf = new RandomAccessFile(filePath, "r")) {
+            raf.seek(position);
+            bytesLeidos=raf.read(bf);
+        }catch(IOException e){ e.printStackTrace();}
+
+        if(bytesLeidos==-1){return "El archivo está vacio";// comprueba que el archivo tenga información
+        }else{return new String(bf);} //Combierte el array de bytes a un string
+
     }
 
     @Override
@@ -371,9 +360,26 @@ public class FileUserServiceImpl implements FileUserService {
          * - RandomAccessFile (constructor con modo "rw", seek, write)
          * - String.getBytes() para obtener bytes
          */
-        
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar randomAccessWrite usando RandomAccessFile");
+
+        File file=new File(filePath);
+        Path ruta=Paths.get(filePath);
+
+        if(!file.exists()){
+            try {
+                Files.createFile(ruta);
+            }catch (IOException e){e.printStackTrace();}
+
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile(filePath, "rw")) {
+            raf.seek(position);
+            raf.writeBytes(content);
+            return true;
+        }catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     @Override
@@ -395,9 +401,23 @@ public class FileUserServiceImpl implements FileUserService {
          * InputStreamReader isr = new InputStreamReader(new FileInputStream(source), "ISO-8859-1");
          * OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(target), "UTF-8");
          */
-        
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar convertFileEncoding usando InputStreamReader/OutputStreamWriter");
+
+
+        File file=new File(sourceFile);
+        if (!file.exists()) {return false;}
+
+        try(BufferedReader inputReader = new BufferedReader(new InputStreamReader(new FileInputStream(sourceFile), sourceCharset));
+            BufferedWriter outputWriter =new BufferedWriter(new OutputStreamWriter(new FileOutputStream(targetFile), targetCharset));){
+
+            //Lo que hace este bucle es que mientras pueda leer cambia la linea leida por el formato que le hayas puesto al writer
+            while(inputReader.readLine()!=null){outputWriter.write(inputReader.readLine());}
+
+            return true;
+        }catch(IOException e){
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     // ========================================================================================
@@ -421,9 +441,24 @@ public class FileUserServiceImpl implements FileUserService {
          * - Stream API para filtrado
          * - FilenameFilter o predicados
          */
-        
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar listUserFiles usando Files.list()");
+
+        ArrayList<String> listaArchivos = new ArrayList<>();
+        File file=new File(directoryPath);
+
+        if (!file.exists()) {return null;}
+        if (!file.isDirectory()) {return null;}
+
+        if(file.listFiles()==null){return listaArchivos;}
+
+        List<String> archivos = Arrays.asList(file.list());
+
+        for (String archivo : archivos) {
+            if (archivo.endsWith(".txt")||archivo.endsWith(".csv")||archivo.endsWith(".xml")) {
+                listaArchivos.add(archivo);
+            }
+        }
+
+        return listaArchivos;
     }
 
     @Override
@@ -444,9 +479,64 @@ public class FileUserServiceImpl implements FileUserService {
          * - Files.createDirectories()
          * - Files.isReadable(), Files.isWritable()
          */
-        
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar validateDirectoryStructure usando Files API");
+
+
+        File file=new File(basePath);
+
+        if (!file.exists()) {return false;}
+        if (!file.isDirectory()) {return false;}
+
+        List<File> archivos = Arrays.asList(file.listFiles());
+        boolean existeData= false;
+        boolean existeExports= false;
+        boolean existeTemp = false;
+        for (File archivo : archivos) {
+            if (archivo.isDirectory() && archivo.getName().equals("data")) { existeData=true; }
+            if (archivo.isDirectory() && archivo.getName().equals("exports")) { existeExports=true; }
+            if (archivo.isDirectory() && archivo.getName().equals("temp")) { existeTemp=true; }
+        }
+
+        try{
+
+            Path path;
+
+            if(!existeData) {
+                path=Paths.get(basePath+"/data");
+                Files.createDirectories(path);
+
+                File directorioData=new File(basePath+"/data");
+                if(!Files.isReadable(path)){ directorioData.setReadable(true); }
+                if(!Files.isWritable(path)){ directorioData.setWritable(true); }
+
+            }
+            if(!existeExports){
+                path=Paths.get(basePath+"/exports");
+                Files.createDirectories(path);
+
+                File directorioExports =new File(basePath+"/exports");
+                if(!Files.isReadable(path)){ directorioExports.setReadable(true); }
+                if(!Files.isWritable(path)){ directorioExports.setWritable(true); }
+            }
+            if(!existeTemp){
+                path=Paths.get(basePath+"/temp");
+                Files.createDirectories(path);
+
+                File directorioTemp =new File(basePath+"/temp");
+                if(!Files.isReadable(path)){ directorioTemp.setReadable(true); }
+                if(!Files.isWritable(path)){ directorioTemp.setWritable(true); }
+            }
+
+            return true;
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            return false;
+
+        }
+
+
+
         
         // Estructura sugerida:
         // basePath/
@@ -474,9 +564,25 @@ public class FileUserServiceImpl implements FileUserService {
          * - File.createTempFile() (método estático)
          * - FileWriter para escribir contenido
          */
-        
-        // TODO: Implementar aquí
-        throw new UnsupportedOperationException("TODO: Implementar createTempFile usando File.createTempFile()");
+        try {
+
+            File tempFile=File.createTempFile(prefix, ".tmp");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+                writer.write(content);
+            }catch (IOException e){
+                e.printStackTrace();
+                return "No se ha podido escribir en el archivo";
+            }
+
+            String tempPath=tempFile.getAbsolutePath();
+            return tempPath;
+
+        }catch (IOException e){
+
+            e.printStackTrace();
+            return "No se ha podido crear el archivo";
+
+        }
     }
 
     @Override
