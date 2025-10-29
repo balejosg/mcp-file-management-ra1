@@ -39,13 +39,14 @@ public class User {
     private LocalDateTime updatedAt;
 
     public User() {
-        this.active = true;
+        this.active = true; 
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    public User(String name, String email, String department, String role) {
-        this();
+    public User(Long id, String name, String email, String department, String role) {
+        this();        
+        this.id = id;
         this.name = name;
         this.email = email;
         this.department = department;
@@ -54,10 +55,6 @@ public class User {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
