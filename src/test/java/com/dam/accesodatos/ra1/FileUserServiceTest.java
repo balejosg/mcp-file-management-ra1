@@ -354,8 +354,7 @@ class FileUserServiceTest {
     // ================================
 
     private User createTestUser(Long id, String name, String email, String department, String role) {
-        User user = new User(name, email, department, role);
-        user.setId(id);
+        User user = new User(id, name, email, department, role);
         user.setCreatedAt(LocalDateTime.of(2024, 1, 1, 10, 0));
         user.setUpdatedAt(LocalDateTime.of(2024, 1, 1, 10, 0));
         return user;
