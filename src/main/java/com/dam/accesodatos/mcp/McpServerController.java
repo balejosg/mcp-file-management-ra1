@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.dam.accesodatos.ra1.FileUserService;
+import com.dam.accesodatos.model.User;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -442,50 +444,89 @@ public class McpServerController {
     /**
      * Escribe usuarios a archivo XML
      */
-    @PostMapping("/xml/write")
-    public ResponseEntity<Map<String, Object>> writeXML(@RequestBody Map<String, Object> request) {
-        logger.debug("Escribiendo usuarios a XML");
+   @PostMapping("/xml/write")
+   public ResponseEntity<Map<String, Object>> writeXML(@RequestBody Map<String, Object> request) {
+       logger.debug("Escribiendo usuarios a XML");
+   
+   
+       String filePath = (String) request.get("filePath");
+       @SuppressWarnings("unchecked")
+       List<Map<String, Object>> usersData = (List<Map<String, Object>>) request.get("users");
+   
+   
+       if (filePath == null || filePath.trim().isEmpty()) {
+           Map<String, Object> error = new HashMap<>();
+           error.put("error", "El parámetro 'filePath' es requerido");
+           return ResponseEntity.badRequest().body(error);
+       }
+   
+   
+       if (usersData == null || usersData.isEmpty()) {
+           Map<String, Object> error = new HashMap<>();
+           error.put("error", "El parámetro 'users' es requerido y no puede estar vacío");
+           return ResponseEntity.badRequest().body(error);
+       }
+   
+   
+       try {
+           // Convertir List<Map<String, Object>> a List<User>
+           List<com.dam.accesodatos.model.User> users = new java.util.ArrayList<>();
+           
+           for (Map<String, Object> userData : usersData) {
+               // Extraer datos del map
+               Long id = userData.get("id") != null ? ((Number) userData.get("id")).longValue() : null;
+               String name = (String) userData.get("name");
+               String email = (String) userData.get("email");
+               String department = (String) userData.get("department");
+               String role = (String) userData.get("role");
 
-        String filePath = (String) request.get("filePath");
-        @SuppressWarnings("unchecked")
-        List<Map<String, Object>> usersData = (List<Map<String, Object>>) request.get("users");
+               // Crear User con constructor apropiado
+               User user = new User(id, name, email, department, role);
 
-        if (filePath == null || filePath.trim().isEmpty()) {
-            Map<String, Object> error = new HashMap<>();
-            error.put("error", "El parámetro 'filePath' es requerido");
-            return ResponseEntity.badRequest().body(error);
-        }
+               // Setters solo para campos mutables opcionales
+               if (userData.get("active") != null) {
+                   user.setActive((Boolean) userData.get("active"));
+               }
 
-        if (usersData == null || usersData.isEmpty()) {
-            Map<String, Object> error = new HashMap<>();
-            error.put("error", "El parámetro 'users' es requerido y no puede estar vacío");
-            return ResponseEntity.badRequest().body(error);
-        }
+               if (userData.get("createdAt") != null) {
+                   String createdAtStr = (String) userData.get("createdAt");
+                   user.setCreatedAt(LocalDateTime.parse(createdAtStr));
+               }
 
-        try {
-            List<com.dam.accesodatos.model.User> users = new java.util.ArrayList<>();
-
-            boolean success = fileUserService.writeUsersToXML(users, filePath);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("tool", "write_users_xml");
-            response.put("input", Map.of("filePath", filePath, "users", usersData.size()));
-            response.put("result", success);
-            response.put("status", "success");
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            logger.error("Error escribiendo XML: " + filePath, e);
-
-            Map<String, Object> error = new HashMap<>();
-            error.put("error", "Error escribiendo XML: " + e.getMessage());
-            error.put("tool", "write_users_xml");
-            error.put("input", filePath);
-            error.put("status", "error");
-
-            return ResponseEntity.status(500).body(error);
-        }
-    }
+               if (userData.get("updatedAt") != null) {
+                   String updatedAtStr = (String) userData.get("updatedAt");
+                   user.setUpdatedAt(LocalDateTime.parse(updatedAtStr));
+               }
+               
+               users.add(user);
+           }
+   
+   
+           boolean success = fileUserService.writeUsersToXML(users, filePath);
+   
+   
+           Map<String, Object> response = new HashMap<>();
+           response.put("tool", "write_users_xml");
+           response.put("input", Map.of("filePath", filePath, "users", usersData.size()));
+           response.put("result", success);
+           response.put("status", "success");
+   
+   
+           return ResponseEntity.ok(response);
+       } catch (Exception e) {
+           logger.error("Error escribiendo XML: " + filePath, e);
+   
+   
+           Map<String, Object> error = new HashMap<>();
+           error.put("error", "Error escribiendo XML: " + e.getMessage());
+           error.put("tool", "write_users_xml");
+           error.put("input", filePath);
+           error.put("status", "error");
+   
+   
+           return ResponseEntity.status(500).body(error);
+       }
+   }
 
     // ========== FILE MANAGEMENT ENDPOINTS ==========
 
