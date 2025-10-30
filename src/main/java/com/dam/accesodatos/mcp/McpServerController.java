@@ -249,9 +249,37 @@ public class McpServerController {
         }
 
         try {
-            // Convertir Map a User objects (simplificado - en producción usar ObjectMapper)
+            // Convertir Map a User objects
             List<com.dam.accesodatos.model.User> users = new java.util.ArrayList<>();
-            // Nota: Esta conversión requiere implementación completa en producción
+
+            for (Map<String, Object> userData : usersData) {
+                // Extraer datos del map
+                Long id = userData.get("id") != null ? ((Number) userData.get("id")).longValue() : null;
+                String name = (String) userData.get("name");
+                String email = (String) userData.get("email");
+                String department = (String) userData.get("department");
+                String role = (String) userData.get("role");
+
+                // Crear User con constructor apropiado
+                User user = new User(id, name, email, department, role);
+
+                // Setters solo para campos mutables opcionales
+                if (userData.get("active") != null) {
+                    user.setActive((Boolean) userData.get("active"));
+                }
+
+                if (userData.get("createdAt") != null) {
+                    String createdAtStr = (String) userData.get("createdAt");
+                    user.setCreatedAt(LocalDateTime.parse(createdAtStr));
+                }
+
+                if (userData.get("updatedAt") != null) {
+                    String updatedAtStr = (String) userData.get("updatedAt");
+                    user.setUpdatedAt(LocalDateTime.parse(updatedAtStr));
+                }
+
+                users.add(user);
+            }
 
             boolean success = fileUserService.writeUsersToCSV(users, filePath);
 
@@ -340,6 +368,35 @@ public class McpServerController {
 
         try {
             List<com.dam.accesodatos.model.User> users = new java.util.ArrayList<>();
+
+            for (Map<String, Object> userData : usersData) {
+                // Extraer datos del map
+                Long id = userData.get("id") != null ? ((Number) userData.get("id")).longValue() : null;
+                String name = (String) userData.get("name");
+                String email = (String) userData.get("email");
+                String department = (String) userData.get("department");
+                String role = (String) userData.get("role");
+
+                // Crear User con constructor apropiado
+                User user = new User(id, name, email, department, role);
+
+                // Setters solo para campos mutables opcionales
+                if (userData.get("active") != null) {
+                    user.setActive((Boolean) userData.get("active"));
+                }
+
+                if (userData.get("createdAt") != null) {
+                    String createdAtStr = (String) userData.get("createdAt");
+                    user.setCreatedAt(LocalDateTime.parse(createdAtStr));
+                }
+
+                if (userData.get("updatedAt") != null) {
+                    String updatedAtStr = (String) userData.get("updatedAt");
+                    user.setUpdatedAt(LocalDateTime.parse(updatedAtStr));
+                }
+
+                users.add(user);
+            }
 
             boolean success = fileUserService.writeUsersToJSON(users, filePath);
 
